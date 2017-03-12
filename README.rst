@@ -3,7 +3,10 @@ tokenizer
 
 ----
 
-Natural Language tool-kit for Indian languages
+Tokenizer for Indian scripts and Roman script.
+
+This module provides a complete tokenizer for Indian languages including Urdu, Kashmiri and Roman script.
+
 
 Install
 ^^^^^^^
