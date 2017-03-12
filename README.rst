@@ -23,8 +23,8 @@ Tokenizer
 .. code:: python
 
     >>> from __future__ import unicode_literals
-    >>> from iscnlp import Tokenizer
-    >>> tk = Tokenizer(lang='eng', tweets=True)
+    >>> from isc_tokenizer import Tokenizer
+    >>> tk = Tokenizer(lang='eng', smt=True) #smt is a flag for social-media-text
     >>> text = "RT @BJP_RSS Crack down on Black money.India slides to 75th slot on Swiss bank money list #ModiForeignAchievements @RituRathaur https://t.c…"
     >>> tk.tokenize(text)
     ['RT', '@BJP_RSS', 'Crack', 'down', 'on', 'Black', 'money', '.', 'India', 'slides', 'to', '75th', 'slot', 'on', 'Swiss', 'bank', 'money', 'list', '#ModiForeignAchievements', '@RituRathaur', 'https://t.c…']
@@ -57,7 +57,8 @@ Tokenizer can also be called from Command Line Interface.
       -i , --input            <input-file>
       -s, --split-sentences   set this flag to apply sentence segmentation
       -o , --output           <output-file>
-      -t, --twitter-data      set this flag if the input file contains tweets
+      -t, --social-media-test set this flag if the input file contains social media text 
+                              like twitter, facebook and whatsapp
       -l , --language         select language (3 letter ISO-639 code) {hin, urd,
                               ben, asm, guj, mal, pan, tel, tam, kan, ori, mar, nep,
                               bod, kok, kas, eng}
