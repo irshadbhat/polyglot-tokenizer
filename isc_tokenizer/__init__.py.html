@@ -1,0 +1,130 @@
+<html><head>
+<title>isc_tokenizer/__init__.py</title>
+<meta name="Generator" content="htmlizer/[twisted, version 13.2.0]" />
+<link rel="alternate" href="isc_tokenizer/__init__.py" type="text/x-python" />
+
+</head>
+<body>
+<pre><span class="py-src-comment">#!/usr/bin/env python</span>
+<span class="py-src-comment"># -*- coding: utf-8 -*-</span>
+
+<span class="py-src-keyword">from</span> <span class="py-src-variable">__future__</span> <span class="py-src-keyword">import</span> <span class="py-src-variable">unicode_literals</span>
+
+<span class="py-src-string">"""Tokenizer for Indian scripts and Roman script.
+
+This module provides a complete tokenizer for Indian languages
+including Urdu, Kashmiri and Roman script.
+
+Copyright (c) 2015-2016 Irshad Ahmad
+&lt;irshad.bhat@research.iiit.ac.in&gt;
+"""</span>
+
+<span class="py-src-keyword">import</span> <span class="py-src-variable">io</span>
+<span class="py-src-keyword">import</span> <span class="py-src-variable">sys</span>
+<span class="py-src-keyword">import</span> <span class="py-src-variable">codecs</span>
+<span class="py-src-keyword">import</span> <span class="py-src-variable">argparse</span>
+
+<span class="py-src-keyword">from</span> .<span class="py-src-variable">isc_tokenizer</span> <span class="py-src-keyword">import</span> <span class="py-src-variable">Tokenizer</span>
+
+<span class="py-src-variable">__all__</span> = [<span class="py-src-string">'Tokenizer'</span>]
+<span class="py-src-variable">__version__</span> = <span class="py-src-string">'1.0'</span>
+
+
+<span class="py-src-keyword">def</span> <span class="py-src-identifier">parse_args</span>(<span class="py-src-parameter">args</span>):
+    <span class="py-src-variable">prog</span> = <span class="py-src-string">'isc-tokenizer'</span>
+    <span class="py-src-variable">description</span> = <span class="py-src-string">'Tokenizer for Indian Scripts'</span>
+    <span class="py-src-variable">languages</span> = <span class="py-src-string">'''hin urd ben asm guj mal pan tel tam kan ori mar
+                nep bod kok kas eng spa'''</span>.<span class="py-src-variable">split</span>()
+    <span class="py-src-variable">lang_help</span> = <span class="py-src-string">'select language (3 letter ISO-639 code) {%s}'</span> % (
+                <span class="py-src-string">', '</span>.<span class="py-src-variable">join</span>(<span class="py-src-variable">languages</span>))
+    <span class="py-src-comment"># parse command line arguments</span>
+    <span class="py-src-variable">parser</span> = <span class="py-src-variable">argparse</span>.<span class="py-src-variable">ArgumentParser</span>(<span class="py-src-variable">prog</span>=<span class="py-src-variable">prog</span>,
+                                     <span class="py-src-variable">description</span>=<span class="py-src-variable">description</span>)
+    <span class="py-src-variable">parser</span>.<span class="py-src-variable">add_argument</span>(<span class="py-src-string">'-v'</span>,
+                        <span class="py-src-string">'--version'</span>,
+                        <span class="py-src-variable">action</span>=<span class="py-src-string">'version'</span>,
+                        <span class="py-src-variable">version</span>=<span class="py-src-string">'%s %s'</span> % (<span class="py-src-variable">prog</span>, <span class="py-src-variable">__version__</span>))
+    <span class="py-src-variable">parser</span>.<span class="py-src-variable">add_argument</span>(<span class="py-src-string">'-i'</span>,
+                        <span class="py-src-string">'--input'</span>,
+                        <span class="py-src-variable">metavar</span>=<span class="py-src-string">''</span>,
+                        <span class="py-src-variable">dest</span>=<span class="py-src-string">'infile'</span>,
+                        <span class="py-src-variable">type</span>=<span class="py-src-variable">str</span>,
+                        <span class="py-src-variable">help</span>=<span class="py-src-string">'&lt;input-file&gt;'</span>)
+    <span class="py-src-variable">parser</span>.<span class="py-src-variable">add_argument</span>(<span class="py-src-string">'-s'</span>,
+                        <span class="py-src-string">'--split-sentences'</span>,
+                        <span class="py-src-variable">dest</span>=<span class="py-src-string">'split_sen'</span>,
+                        <span class="py-src-variable">action</span>=<span class="py-src-string">'store_true'</span>,
+                        <span class="py-src-variable">help</span>=<span class="py-src-string">'set this flag to apply'</span>
+                             <span class="py-src-string">' sentence segmentation'</span>)
+    <span class="py-src-variable">parser</span>.<span class="py-src-variable">add_argument</span>(<span class="py-src-string">'-t'</span>,
+                        <span class="py-src-string">'--social-media-test'</span>,
+                        <span class="py-src-variable">dest</span>=<span class="py-src-string">'smt'</span>,
+                        <span class="py-src-variable">action</span>=<span class="py-src-string">'store_true'</span>,
+                        <span class="py-src-variable">help</span>=<span class="py-src-string">'set this flag if the input file contains '</span>
+                             <span class="py-src-string">'social media text like twitter, facebook '</span>
+                             <span class="py-src-string">'and whatsapp'</span>)
+    <span class="py-src-variable">parser</span>.<span class="py-src-variable">add_argument</span>(<span class="py-src-string">'-o'</span>,
+                        <span class="py-src-string">'--output'</span>,
+                        <span class="py-src-variable">metavar</span>=<span class="py-src-string">''</span>,
+                        <span class="py-src-variable">dest</span>=<span class="py-src-string">'outfile'</span>,
+                        <span class="py-src-variable">type</span>=<span class="py-src-variable">str</span>,
+                        <span class="py-src-variable">help</span>=<span class="py-src-string">'&lt;output-file&gt;'</span>)
+    <span class="py-src-variable">parser</span>.<span class="py-src-variable">add_argument</span>(<span class="py-src-string">'-l'</span>,
+                        <span class="py-src-string">'--language'</span>,
+                        <span class="py-src-variable">metavar</span>=<span class="py-src-string">''</span>,
+                        <span class="py-src-variable">dest</span>=<span class="py-src-string">'lang'</span>,
+                        <span class="py-src-variable">choices</span>=<span class="py-src-variable">languages</span>,
+                        <span class="py-src-variable">default</span>=<span class="py-src-string">'eng'</span>,
+                        <span class="py-src-variable">help</span>=<span class="py-src-variable">lang_help</span>)
+    <span class="py-src-variable">args</span> = <span class="py-src-variable">parser</span>.<span class="py-src-variable">parse_args</span>(<span class="py-src-variable">args</span>)
+    <span class="py-src-keyword">return</span> <span class="py-src-variable">args</span>
+
+
+<span class="py-src-keyword">def</span> <span class="py-src-identifier">get_file_pointers</span>(<span class="py-src-parameter">args</span>):
+    <span class="py-src-keyword">if</span> <span class="py-src-variable">args</span>.<span class="py-src-variable">infile</span>:
+        <span class="py-src-variable">ifp</span> = <span class="py-src-variable">io</span>.<span class="py-src-variable">open</span>(<span class="py-src-variable">args</span>.<span class="py-src-variable">infile</span>, <span class="py-src-variable">encoding</span>=<span class="py-src-string">'utf-8'</span>)
+    <span class="py-src-keyword">else</span>:
+        <span class="py-src-keyword">if</span> <span class="py-src-variable">sys</span>.<span class="py-src-variable">version_info</span>[<span class="py-src-number">0</span>] &gt;= <span class="py-src-number">3</span>:
+            <span class="py-src-variable">ifp</span> = <span class="py-src-variable">codecs</span>.<span class="py-src-variable">getreader</span>(<span class="py-src-string">'utf8'</span>)(<span class="py-src-variable">sys</span>.<span class="py-src-variable">stdin</span>.<span class="py-src-variable">buffer</span>)
+        <span class="py-src-keyword">else</span>:
+            <span class="py-src-variable">ifp</span> = <span class="py-src-variable">codecs</span>.<span class="py-src-variable">getreader</span>(<span class="py-src-string">'utf8'</span>)(<span class="py-src-variable">sys</span>.<span class="py-src-variable">stdin</span>)
+
+    <span class="py-src-keyword">if</span> <span class="py-src-variable">args</span>.<span class="py-src-variable">outfile</span>:
+        <span class="py-src-variable">ofp</span> = <span class="py-src-variable">io</span>.<span class="py-src-variable">open</span>(<span class="py-src-variable">args</span>.<span class="py-src-variable">outfile</span>, <span class="py-src-variable">mode</span>=<span class="py-src-string">'w'</span>, <span class="py-src-variable">encoding</span>=<span class="py-src-string">'utf-8'</span>)
+    <span class="py-src-keyword">else</span>:
+        <span class="py-src-keyword">if</span> <span class="py-src-variable">sys</span>.<span class="py-src-variable">version_info</span>[<span class="py-src-number">0</span>] &gt;= <span class="py-src-number">3</span>:
+            <span class="py-src-variable">ofp</span> = <span class="py-src-variable">codecs</span>.<span class="py-src-variable">getwriter</span>(<span class="py-src-string">'utf8'</span>)(<span class="py-src-variable">sys</span>.<span class="py-src-variable">stdout</span>.<span class="py-src-variable">buffer</span>)
+        <span class="py-src-keyword">else</span>:
+            <span class="py-src-variable">ofp</span> = <span class="py-src-variable">codecs</span>.<span class="py-src-variable">getwriter</span>(<span class="py-src-string">'utf8'</span>)(<span class="py-src-variable">sys</span>.<span class="py-src-variable">stdout</span>)
+    <span class="py-src-keyword">return</span> <span class="py-src-variable">ifp</span>, <span class="py-src-variable">ofp</span>
+
+
+<span class="py-src-keyword">def</span> <span class="py-src-identifier">process_args</span>(<span class="py-src-parameter">args</span>):
+    <span class="py-src-variable">ifp</span>, <span class="py-src-variable">ofp</span> = <span class="py-src-variable">get_file_pointers</span>(<span class="py-src-variable">args</span>)
+
+    <span class="py-src-comment"># initialize tokenizer</span>
+    <span class="py-src-variable">tok</span> = <span class="py-src-variable">Tokenizer</span>(<span class="py-src-variable">lang</span>=<span class="py-src-variable">args</span>.<span class="py-src-variable">lang</span>,
+                    <span class="py-src-variable">smt</span>=<span class="py-src-variable">args</span>.<span class="py-src-variable">smt</span>,
+                    <span class="py-src-variable">split_sen</span>=<span class="py-src-variable">args</span>.<span class="py-src-variable">split_sen</span>,
+                    <span class="py-src-variable">from_file</span>=<span class="py-src-variable">True</span>)
+
+    <span class="py-src-comment"># tokenize</span>
+    <span class="py-src-keyword">for</span> <span class="py-src-variable">line</span> <span class="py-src-keyword">in</span> <span class="py-src-variable">ifp</span>:
+        <span class="py-src-variable">line</span> = <span class="py-src-variable">tok</span>.<span class="py-src-variable">tokenize</span>(<span class="py-src-variable">line</span>)
+        <span class="py-src-keyword">if</span> <span class="py-src-variable">args</span>.<span class="py-src-variable">split_sen</span>:
+            <span class="py-src-variable">line</span> = <span class="py-src-string">'\n'</span>.<span class="py-src-variable">join</span>([<span class="py-src-string">' '</span>.<span class="py-src-variable">join</span>(<span class="py-src-variable">sen</span>) <span class="py-src-keyword">for</span> <span class="py-src-variable">sen</span> <span class="py-src-keyword">in</span> <span class="py-src-variable">line</span>])
+        <span class="py-src-keyword">else</span>:
+            <span class="py-src-variable">line</span> = <span class="py-src-string">' '</span>.<span class="py-src-variable">join</span>(<span class="py-src-variable">line</span>)
+        <span class="py-src-variable">ofp</span>.<span class="py-src-variable">write</span>(<span class="py-src-string">'%s\n'</span> % <span class="py-src-variable">line</span>)
+
+    <span class="py-src-comment"># close files</span>
+    <span class="py-src-variable">ifp</span>.<span class="py-src-variable">close</span>()
+    <span class="py-src-variable">ofp</span>.<span class="py-src-variable">close</span>()
+
+
+<span class="py-src-keyword">def</span> <span class="py-src-identifier">main</span>():
+    <span class="py-src-comment"># parse arguments</span>
+    <span class="py-src-variable">args</span> = <span class="py-src-variable">parse_args</span>(<span class="py-src-variable">sys</span>.<span class="py-src-variable">argv</span>[<span class="py-src-number">1</span>:])
+    <span class="py-src-variable">process_args</span>(<span class="py-src-variable">args</span>)
+</pre>
+</body>
