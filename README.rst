@@ -3,9 +3,7 @@ Tokenizer
 
 ----
 
-Tokenizer for Indian scripts and Roman script.
-
-This module provides a complete tokenizer for Indian languages including Urdu, Kashmiri and Roman script.
+Tokenizer for Indian languages, English and social media texts like Facebook, Twitter etc.
 
 
 Install
@@ -13,8 +11,8 @@ Install
 
 ::
 
-    - git clone https://irshadbhat@bitbucket.org/iscnlp/tokenizer.git
-    - cd tokenizer
+    - git clone https://github.com/irshadbhat/indic-tokenizer.git
+    - cd indic-tokenizer
     - sudo python setup.py install
 
 Tokenizer
@@ -23,7 +21,7 @@ Tokenizer
 .. code:: python
 
     >>> from __future__ import unicode_literals
-    >>> from isc_tokenizer import Tokenizer
+    >>> from indic_tokenizer import Tokenizer
     >>> tk = Tokenizer(lang='eng', smt=True) #smt is a flag for social-media-text
     >>> text = "RT @BJP_RSS Crack down on Black money.India slides to 75th slot on Swiss bank money list #ModiForeignAchievements @RituRathaur https://t.c…"
     >>> tk.tokenize(text)
@@ -46,7 +44,7 @@ Tokenizer can also be called from Command Line Interface.
 
 .. parsed-literal::
 
-    irshad@iscnlp$ isc-tokenizer --h
+    irshad@indicnlp$ indic-tokenizer --h
     usage: Indic-Tokenizer [-h] [-v] [-i] [-s] [-o] [-l]
     
     Tokenizer for Indian Scripts

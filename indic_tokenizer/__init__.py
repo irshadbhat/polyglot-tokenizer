@@ -24,7 +24,7 @@ __version__ = '1.0'
 
 
 def parse_args(args):
-    prog = 'isc-tokenizer'
+    prog = 'indic-tokenizer'
     description = 'Tokenizer for Indian Scripts'
     languages = '''hin urd ben asm guj mal pan tel tam kan ori mar
                 nep bod kok kas eng spa'''.split()
