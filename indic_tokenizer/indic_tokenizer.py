@@ -9,14 +9,14 @@ from .base import BaseTokenizer
 
 
 class IndicTokenizer(BaseTokenizer):
-    def __init__(self, lang='hin', split_sen=False, smt=False):
+    def __init__(self, lang='hi', split_sen=False, smt=False):
         super(IndicTokenizer, self).__init__(split_sen)
         self.lang = lang
-        self.urd = lang in ['urd', 'kas']
-        if lang == 'asm':
-            self.lang = 'ben'
-        if lang in ["mar", "nep", "bod", "kok"]:
-            self.lang = 'hin'
+        self.urd = lang in ['ur', 'ks']
+        if lang == 'as':
+            self.lang = 'bn'
+        if lang in ["mr", "ne", "bo", "kok"]:
+            self.lang = 'hi'
         self.tw = smt
         # precompile regexes
         self.fit()
@@ -149,28 +149,28 @@ class IndicTokenizer(BaseTokenizer):
         text = self.tokenize_prefixes(text)
         # tokenize by language script
         text = self.tokenize_by_script(text, '\u0966-\u096f',
-                                       '\u0900-\u0963\u0970-\u097f', 'hin')
+                                       '\u0900-\u0963\u0970-\u097f', 'hi')
         text = self.tokenize_by_script(text, '\u09e6-\u09ef',
-                                       '\u0980-\u09e3\u09f0-\u09ff', 'ben',
+                                       '\u0980-\u09e3\u09f0-\u09ff', 'bn',
                                        special_ch='\u09f2\u09f3\u09fa\u09fb')
         text = self.tokenize_by_script(text, '\u0ae6-\u0aef',
-                                       '\u0A80-\u0AE3\u0Af0-\u0Aff', 'guj',
+                                       '\u0A80-\u0AE3\u0Af0-\u0Aff', 'gu',
                                        special_ch='\u0AD0\u0AF1')
         text = self.tokenize_by_script(text, '\u0d66-\u0d6f',
-                                       '\u0D00-\u0D63\u0D73-\u0D7f', 'mal',
+                                       '\u0D00-\u0D63\u0D73-\u0D7f', 'ml',
                                        special_ch='\u0d73\u0d74\u0d75')
         text = self.tokenize_by_script(text, '\u0a66-\u0a6f',
-                                       '\u0A00-\u0A63\u0A70-\u0A7f', 'pan')
+                                       '\u0A00-\u0A63\u0A70-\u0A7f', 'pa')
         text = self.tokenize_by_script(text, '\u0c66-\u0c6f',
-                                       '\u0c00-\u0c63\u0c70-\u0c7f', 'tel',
+                                       '\u0c00-\u0c63\u0c70-\u0c7f', 'te',
                                        special_ch='\u0c78-\u0c7f')
         text = self.tokenize_by_script(text, '\u0be6-\u0bef',
-                                       '\u0B80-\u0Be3\u0Bf3-\u0Bff', 'tam',
+                                       '\u0B80-\u0Be3\u0Bf3-\u0Bff', 'ta',
                                        special_ch='\u0bd0\u0bf3-\u0bff')
         text = self.tokenize_by_script(text, '\u0ce6-\u0cef',
-                                       '\u0C80-\u0Ce3\u0Cf1-\u0Cff', 'kan')
+                                       '\u0C80-\u0Ce3\u0Cf1-\u0Cff', 'kn')
         text = self.tokenize_by_script(text, '\u0b66-\u0b6f',
-                                       '\u0B00-\u0B63\u0B70-\u0B7f', 'ori',
+                                       '\u0B00-\u0B63\u0B70-\u0B7f', 'or',
                                        special_ch='\u0B72-\u0B77')
         if self.urd:
             # seperate out urdu full-stop (۔)

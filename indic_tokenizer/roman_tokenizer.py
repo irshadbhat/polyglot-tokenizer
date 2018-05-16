@@ -11,42 +11,42 @@ from .base import BaseTokenizer
 
 
 class RomanTokenizer(BaseTokenizer):
-    def __init__(self, lang='eng', split_sen=False, smt=False):
+    def __init__(self, lang='en', split_sen=False, smt=False, fit=True):
         super(RomanTokenizer, self).__init__(split_sen)
         self.tw = smt
         self.lang = lang
-        if self.lang == 'spa':
-            file_path = os.path.dirname(os.path.abspath(__file__))
-            with io.open('%s/data/NONBREAKING_PREFIXES.ES' % file_path, encoding='utf-8') as fp:
-                self.NBP = self.NBP | set(fp.read().split())
+        file_path = os.path.dirname(os.path.abspath(__file__))
+        with io.open('%s/data/nonbreaking_prefixes.%s' % (file_path, lang), encoding='utf-8') as fp:
+            self.NBP = self.NBP | set(fp.read().split())
         # precompile regexes
-        self.fit()
+        if fit:
+            self.fit()
 
     def fit(self):
         # seperate "," outside
         self.notanumc = re.compile('([^0-9]),')
         self.cnotanum = re.compile(',([^0-9])')
-        # split contractions right (both "'" and "’")
+        # split contractions
         self.numcs = re.compile("([0-9])'s")
         self.naca = re.compile(
-            "([^a-zA-Z0-9\u0080-\u024f])'([a-zA-Z\u0080-\u024f])")
+            "([^%s0-9])'([%s])" %((self.alpha,)*2))
         # split hyphens
         self.hypheninnun = re.compile('(-?[0-9]-+[0-9]-?){,}')
-        self.ch_hyp_noalnum = re.compile('(.)-([^a-zA-Z0-9])')
-        self.noalnum_hyp_ch = re.compile('([^a-zA-Z0-9])-(.)')
+        self.ch_hyp_noalnum = re.compile('(.)-([^%s0-9])' %self.alpha)
+        self.noalnum_hyp_ch = re.compile('([^%s0-9])-(.)' %self.alpha)
         # split sentences
         if self.split_sen:
-            spa_ch = ''
-            if self.lang == 'spa':
-                spa_ch = '\xc0-\xd6\xd8-\xde'
-            self.splitsenr1 = re.compile(' ([.?]) ([A-Z%s])' % spa_ch)
+            self.splitsenr1 = re.compile(' ([.?]) ([%s])' % self.alpha_upper)
             self.splitsenr2 = re.compile(' ([.?]) ([\'"\(\{\[< ]+) '
-                                         '([A-Z%s])' % spa_ch)
+                                         '([%s])' % self.alpha_upper)
             self.splitsenr3 = re.compile(
-                ' ([.?]) ([\'"\)\}\]> ]+) ([A-Z%s])' % spa_ch)
+                ' ([.?]) ([\'"\)\}\]> ]+) ([%s])' % self.alpha_upper)
         # split Latin lettrs followed by non-Latin letters and vice-versa
-        self.nonltn_ltn = re.compile('([^\u0000-\u024f])([\u0000-\u024f])')
-        self.ltn_nonltn = re.compile('([\u0000-\u024f])([^\u0000-\u024f])')
+        #self.nonltn_ltn = re.compile('([^\u0000-\u024f])([\u0000-\u024f])')
+        #self.ltn_nonltn = re.compile('([\u0000-\u024f])([^\u0000-\u024f])')
+        if self.lang in ['fi', 'sv']:
+            self.specascii = re.compile(r'([\\!@#$%^&*()_+={\[}\]|";<>?`~/])')
+            self.split_colon = re.compile(r':([^%s])' %self.alpha_lower)
 
     def tokenize(self, text):
         # normalize unicode punctituation
@@ -59,20 +59,25 @@ class RomanTokenizer(BaseTokenizer):
             text = self.mask_rep_punct(text)
         # mask splitted contractions
         text = self.mask_sp_contractions(text)
-        text = self.nonltn_ltn.sub(r'\1 \2', text)
-        text = self.ltn_nonltn.sub(r'\1 \2', text)
+        #text = self.nonltn_ltn.sub(r'\1 \2', text)
+        #text = self.ltn_nonltn.sub(r'\1 \2', text)
         # split supplementary unicode
         text = self.bigu.sub(r' \1 ', text)
         # universal tokenization
         text = self.base_tokenize(text)
+        if self.lang in ['fi', 'sv']:
+            text = self.split_colon.sub(r' : \1 ', text)
         # seperate "," outside
         text = self.notanumc.sub(r'\1 , ', text)
         text = self.cnotanum.sub(r' , \1', text)
-        # split contractions right (both "'" and "’")
+        # split contractions 
         text = self.nacna.sub(r"\1 ' \2", text)
         text = self.naca.sub(r"\1 ' \2", text)
         text = self.acna.sub(r"\1 ' \2", text)
-        text = self.aca.sub(r"\1 '\2", text)
+        if self.lang in ['fr', 'ga', 'it']:
+            text = self.aca.sub(r"\1' \2", text)
+        else:
+            text = self.aca.sub(r"\1 '\2", text)
         text = self.numcs.sub(r"\1 's", text)
         text = text.replace("''", " ' ' ")
         # split dots at word beginings

@@ -21,7 +21,7 @@ class BaseTokenizer(object):
         with io.open('%s/data/EMOTICONS' % file_path, encoding='utf-8') as fp:
             self.emoticons = set(fp.read().split())
         # List of Non-breaking Prefixes
-        with io.open('%s/data/NONBREAKING_PREFIXES' % file_path, encoding='utf-8') as fp:
+        with io.open('%s/data/nonbreaking_prefixes.en' % file_path, encoding='utf-8') as fp:
             self.NBP = set(fp.read().split())
         self.punctuation = set(string.punctuation)
         self.pemos = set([x for x in self.emoticons if 
@@ -32,6 +32,9 @@ class BaseTokenizer(object):
                             're 's 'sup 'tis 'twas 've 'n' """
         self.contractions = self.contractions.split() +\
             self.contractions.upper().split()
+        self.alpha = ''.join([unichr(x) for x in range(0x0000, 0x02b0) if unichr(x).isalpha()])
+        self.alpha_lower = ''.join([x for x in self.alpha if x.islower()])
+        self.alpha_upper = ''.join([x for x in self.alpha if x.isupper()])
         # precompile regexes
         self.base_fit()
 
@@ -39,6 +42,8 @@ class BaseTokenizer(object):
         # ASCII junk characters
         self.ascii_junk = re.compile('[\x00-\x1f]')
         # Latin-1 supplementary characters
+        self.latin = re.compile('([\xa1-\xbf\xd7\xf7])')
+        # Latin-1 lowercase
         self.latin = re.compile('([\xa1-\xbf\xd7\xf7])')
         # general unicode punctuations except "’"
         self.uv_punct = re.compile('([\u2012-\u2018\u201a-\u206f])')
@@ -57,16 +62,16 @@ class BaseTokenizer(object):
         # seperate "," outside
         self.notanumc = re.compile('([^0-9]),')
         self.cnotanum = re.compile(',([^0-9])')
-        # split contractions right (both "'" and "’")
+        # split contractions
         self.rnb = re.compile("([a-zA-Z])('[nN]')([a-zA-Z])")
         self.ntc = re.compile("([a-zA-Z'])([nN]'[tT])([a-zA-Z' ])")
         self.numcs = re.compile("([0-9])'s")
         self.aca = re.compile(
-            "([a-zA-Z\u0080-\u024f])'([a-zA-Z\u0080-\u024f])")
+            "([%s])'([%s])" % ((self.alpha,)*2))
         self.acna = re.compile(
-            "([a-zA-Z\u0080-\u024f])'([^a-zA-Z\u0080-\u024f])")
+            "([%s])'([^%s])" % ((self.alpha,)*2))
         self.nacna = re.compile(
-            "([^a-zA-Z\u0080-\u024f])'([^a-zA-Z\u0080-\u024f])")
+            "([^%s])'([^%s])" % ((self.alpha,)*2))
         # split hyphens
         self.multihyphen = re.compile('(-+)')
         # restore multi-dots
@@ -175,18 +180,25 @@ class BaseTokenizer(object):
     def mask_emos_urls(self, text):
         n_e, n_u = 0, 0
         text = re.sub(r'([\W_])(http://|https://|www.)', r'\1 \2', text)
-        words = text.split()
-        text = []
-        for wd in words:
-            if any(c in self.punctuation for c in wd) and len(wd) > 2:
-                for em in self.pemos:
-                    br = len(em)
-                    if wd.startswith(em):
-                        wd = '%s %s' %(wd[:br], wd[br:])
-                    if wd.endswith(em):
-                        wd = '%s %s' %(wd[:-br], wd[-br:])
-            text.append(wd)
-        text = ' '.join(text).split()
+        if self.tw:
+            words = text.split()
+            text = []
+            for wd in words:
+                if len(wd) > 2 and any(c in self.punctuation for c in wd):
+                    for em in self.pemos:
+                        br = len(em)
+                        if len(wd) <= br:
+                            continue
+                        if wd.startswith(em) and (not (wd[br].isalpha() and em[-1].isalpha()))\
+                                and (not (wd[br].isdigit() and em[-1].isdigit())):
+                            wd = '%s %s' %(wd[:br], wd[br:])
+                        if wd.endswith(em) and (not (wd[-br-1].isalpha() and em[0].isalpha()))\
+                                and (not (wd[-br-1].isdigit() and em[0].isdigit())):
+                            wd = '%s %s' %(wd[:-br], wd[-br:])
+                text.append(wd)
+            text = ' '.join(text).split()
+        else:
+            text = text.split()
         self.url_dict = dict()
         self.emos_dict = dict()
         for i, token in enumerate(text):
@@ -226,9 +238,9 @@ class BaseTokenizer(object):
         for i, word in enumerate(words):
             if word[-1] == '.':
                 dotless = word[:-1]
-                if dotless.isdigit():
+                if dotless.isdigit() and dotless not in self.NBP:
                     word = dotless + ' .'
-                elif (('.' in dotless and re.search('[a-zA-Z]', dotless)) or
+                elif (('.' in dotless and re.search('[%s]' %self.alpha, dotless)) or
                         dotless in self.NBP):
                     pass
                 elif (dotless in self.NBP_NUM and
