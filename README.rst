@@ -3,7 +3,7 @@ Tokenizer
 
 ----
 
-Tokenizer for Indian languages, English and social media texts like Facebook, Twitter etc.
+Tokenizer for world's most spoken languages and social media texts like Facebook, Twitter etc.
 
 
 Install
@@ -45,18 +45,24 @@ Tokenizer can also be called from Command Line Interface.
 .. parsed-literal::
 
     irshad@indicnlp$ indic-tokenizer --h
-    usage: Indic-Tokenizer [-h] [-v] [-i] [-s] [-o] [-l]
+    usage: indic-tokenizer [-h] [-v] [-i] [-s] [-t] [-o] [-l]
     
-    Tokenizer for Indian Scripts
+    Tokenizer for world's most spoken languages
+
     
     optional arguments:
-      -h, --help              show this help message and exit
-      -v, --version           show program's version number and exit
-      -i , --input            <input-file>
-      -s, --split-sentences   set this flag to apply sentence segmentation
-      -o , --output           <output-file>
-      -t, --social-media-test set this flag if the input file contains social media text 
-                              like twitter, facebook and whatsapp
-      -l , --language         select language (3 letter ISO-639 code) {hin, urd,
-                              ben, asm, guj, mal, pan, tel, tam, kan, ori, mar, nep,
-                              bod, kok, kas, eng}
+      -h, --help            show this help message and exit
+      -v, --version         show program's version number and exit
+      -i , --input          <input-file>
+      -s, --split-sentences
+                            set this flag to apply sentence segmentation
+      -t, --social-media-test
+                            set this flag if the input file contains social media
+                            text like twitter, facebook and whatsapp
+      -o , --output         <output-file>
+      -l , --language       select language (2 letter ISO-639 code) {hi, ur, bn,
+                            as, gu, ml, pa, te, ta, kn, or, mr, ne, bo, kok, ks,
+                            en, es, ca, cs, de, el, en, fi, fr, ga, hu, is, it,
+                            lt, lv, nl, pl, pt, ro, ru, sk, sl, sv, yue, zh, hsb,
+                            af, ar, be, hy}
+
