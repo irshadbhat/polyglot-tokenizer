@@ -1,3 +1,0 @@
-[console_scripts]
-indic-tokenizer = indic_tokenizer:main
-
