@@ -5,10 +5,9 @@ from __future__ import unicode_literals
 
 """Tokenizer for Indian scripts and Roman script.
 
-This module provides a complete tokenizer for Indian languages
-including Urdu, Kashmiri and Roman script.
+This module provides a tokenizer for world's most spoken languages.
 
-Copyright (c) 2015-2016 Irshad Ahmad
+Copyright (c) 2015-2018 Irshad Ahmad
 <irshad.bhat@research.iiit.ac.in>
 """
 
@@ -26,9 +25,11 @@ __version__ = '1.0'
 def parse_args(args):
     prog = 'indic-tokenizer'
     description = 'Tokenizer for Indian Scripts'
-    languages = '''hin urd ben asm guj mal pan tel tam kan ori mar
-                nep bod kok kas eng spa'''.split()
-    lang_help = 'select language (3 letter ISO-639 code) {%s}' % (
+    languages = '''hi ur bn as gu ml pa te ta kn or mr
+                ne bo kok ks en es ca cs de el en fi
+                fr ga hu is it lt lv nl pl pt ro ru sk
+                sl sv yue zh hsb af ar be hy'''.split()
+    lang_help = 'select language (2 letter ISO-639 code) {%s}' % (
                 ', '.join(languages))
     # parse command line arguments
     parser = argparse.ArgumentParser(prog=prog,
@@ -67,7 +68,7 @@ def parse_args(args):
                         metavar='',
                         dest='lang',
                         choices=languages,
-                        default='eng',
+                        default='en',
                         help=lang_help)
     args = parser.parse_args(args)
     return args
@@ -96,6 +97,12 @@ def process_args(args):
     ifp, ofp = get_file_pointers(args)
 
     # initialize tokenizer
+    if args.lang == 'hsb':
+        args.lang = 'de'
+    elif args.lang in ['af']:
+        args.lang = 'en'
+    elif args.lang == 'ar':
+        args.lang = 'ur'
     tok = Tokenizer(lang=args.lang,
                     smt=args.smt,
                     split_sen=args.split_sen,
