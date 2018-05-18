@@ -12,6 +12,16 @@ class Tokenizer():
                  smt=False, from_file=False):
         self.from_file = from_file
         self.split_sen = split_sen
+        if lang in 'hsb da fo no'.split():
+            lang = 'de'
+        elif lang in ['et']:
+            lang = 'fi'
+        elif lang in ['gl', 'la']:
+            lang = 'it'
+        elif lang in 'af bm eu br tl tr vi yo ko'.split():
+            lang = 'en'
+        elif lang in 'ar ckb fa':
+            lang = 'ur'
         if lang in 'hi ur bn as gu ml pa te ta kn or mr ne bo kok ks'.split():
             self.tok = IndicTokenizer(lang=lang, split_sen=split_sen,
                                       smt=smt)

@@ -30,7 +30,7 @@ def parse_args(args):
                 ne bo br ks en es ca cs de el en fi da eu kok
                 fr ga hu is it lt lv nl pl pt ro ru sk bm yue
                 sl sv zh et fo gl hsb af ar be hy bg ckb ka
-                kk ky la no fa uk tl tr vi yo'''.split()
+                kk ky la no fa uk tl tr vi yo ko'''.split()
     lang_help = 'select language (2 letter ISO-639 code) {%s}' % (
                 ', '.join(languages))
     # parse command line arguments
@@ -99,16 +99,6 @@ def process_args(args):
     ifp, ofp = get_file_pointers(args)
 
     # initialize tokenizer
-    if args.lang in 'hsb da fo no'.split():
-        args.lang = 'de'
-    elif args.lang in ['et']:
-        args.lang = 'fi'
-    elif args.lang in ['gl', 'la']:
-        args.lang = 'it'
-    elif args.lang in 'af bm eu br tl tr vi yo'.split():
-        args.lang = 'en'
-    elif args.lang in 'ar ckb fa':
-        args.lang = 'ur'
     tok = Tokenizer(lang=args.lang,
                     smt=args.smt,
                     split_sen=args.split_sen,
