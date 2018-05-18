@@ -66,7 +66,7 @@ class RomanTokenizer(BaseTokenizer):
         # universal tokenization
         text = self.base_tokenize(text)
         if self.lang in ['fi', 'sv']:
-            text = self.split_colon.sub(r' : \1 ', text)
+            text = self.split_colon.sub(r' : \1', text)
         # seperate "," outside
         text = self.notanumc.sub(r'\1 , ', text)
         text = self.cnotanum.sub(r' , \1', text)
@@ -74,7 +74,7 @@ class RomanTokenizer(BaseTokenizer):
         text = self.nacna.sub(r"\1 ' \2", text)
         text = self.naca.sub(r"\1 ' \2", text)
         text = self.acna.sub(r"\1 ' \2", text)
-        if self.lang in ['fr', 'ga', 'it']:
+        if self.lang in 'fr ga it ca pt ro sk sl'.split():
             text = self.aca.sub(r"\1' \2", text)
         else:
             text = self.aca.sub(r"\1 '\2", text)

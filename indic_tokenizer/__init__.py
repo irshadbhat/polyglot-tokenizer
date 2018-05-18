@@ -3,9 +3,10 @@
 
 from __future__ import unicode_literals
 
-"""Tokenizer for Indian scripts and Roman script.
+"""Tokenizer for world's most spoken languages.
 
-This module provides a tokenizer for world's most spoken languages.
+This module provides a tokenizer for world's most spoken languages and social
+media texts like facebook, twitter etc.
 
 Copyright (c) 2015-2018 Irshad Ahmad
 <irshad.bhat@research.iiit.ac.in>
@@ -24,11 +25,12 @@ __version__ = '1.0'
 
 def parse_args(args):
     prog = 'indic-tokenizer'
-    description = 'Tokenizer for Indian Scripts'
-    languages = '''hi ur bn as gu ml pa te ta kn or mr
-                ne bo kok ks en es ca cs de el en fi
-                fr ga hu is it lt lv nl pl pt ro ru sk
-                sl sv yue zh hsb af ar be hy'''.split()
+    description = "Tokenizer for world's most spoken languages"
+    languages = '''hi ur bn as gu ml pa te ta kn or mr cu myv
+                ne bo br ks en es ca cs de el en fi da eu kok
+                fr ga hu is it lt lv nl pl pt ro ru sk bm yue
+                sl sv zh et fo gl hsb af ar be hy bg ckb ka
+                kk ky la no fa uk tl tr vi yo'''.split()
     lang_help = 'select language (2 letter ISO-639 code) {%s}' % (
                 ', '.join(languages))
     # parse command line arguments
@@ -97,11 +99,15 @@ def process_args(args):
     ifp, ofp = get_file_pointers(args)
 
     # initialize tokenizer
-    if args.lang == 'hsb':
+    if args.lang in 'hsb da fo no'.split():
         args.lang = 'de'
-    elif args.lang in ['af']:
+    elif args.lang in ['et']:
+        args.lang = 'fi'
+    elif args.lang in ['gl', 'la']:
+        args.lang = 'it'
+    elif args.lang in 'af bm eu br tl tr vi yo'.split():
         args.lang = 'en'
-    elif args.lang == 'ar':
+    elif args.lang in 'ar ckb fa':
         args.lang = 'ur'
     tok = Tokenizer(lang=args.lang,
                     smt=args.smt,

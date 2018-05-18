@@ -33,6 +33,7 @@ class BaseTokenizer(object):
         self.contractions = self.contractions.split() +\
             self.contractions.upper().split()
         self.alpha = ''.join([unichr(x) for x in range(0x0000, 0x02b0) if unichr(x).isalpha()])
+        self.alpha += ''.join([unichr(x) for x in range(0x1e00, 0x1eff) if unichr(x).isalpha()])
         self.alpha_lower = ''.join([x for x in self.alpha if x.islower()])
         self.alpha_upper = ''.join([x for x in self.alpha if x.isupper()])
         # precompile regexes

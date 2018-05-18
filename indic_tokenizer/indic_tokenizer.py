@@ -33,8 +33,8 @@ class IndicTokenizer(BaseTokenizer):
         # split contractions right (both "'" and "’")
         self.numcs = re.compile("([0-9\u0966-\u096f])'s")
         self.naca = re.compile(
-            "([^a-zA-Z0-9\u0966-\u096f\u0080-\u024f])"
-            "'([a-zA-Z\u0080-\u024f])")
+            "([^%s0-9\u0966-\u096f\u0080-\u024f])'([%s\u0080-\u024f])" 
+            %((self.alpha,)*2))
         # restore multi-dots
         if self.urd:
             self.restoreudots = re.compile(r'(DOTU)(\1*)MULTI')
@@ -46,12 +46,12 @@ class IndicTokenizer(BaseTokenizer):
             self.splitsenur1 = re.compile(
                 ' ([.?\u06d4\u061f]) '
                 '([\u0617-\u061a\u0620-\u065f\u066e-\u06d3'
-                '\u06d5\u06fa-\u06ffA-Z\(\{\[<])')
+                '\u06d5\u06fa-\u06ff%s\(\{\[<])' % self.alpha_upper)
             self.splitsenur2 = re.compile(
                 ' ([.?\u06d4\u061f]) ([\)\}\]\'"> ]+) ')
         else:
             self.splitsenir1 = re.compile(
-                ' ([|.?\u0964\u0965]) ([\u0900-\u0d7fA-Z\(\{\[<])')
+                ' ([|.?\u0964\u0965]) ([\u0900-\u0d7f%s\(\{\[<])' %self.alpha_upper)
             self.splitsenir2 = re.compile(
                 ' ([|.?\u0964\u0965]) ([\)\}\]\'"> ]+) ')
 
@@ -100,11 +100,11 @@ class IndicTokenizer(BaseTokenizer):
             text)
         # separate out hyphens not in between alphabets
         text = re.sub(
-            r'(.)-([^0-9a-zA-Z%s])' % letters,
+            r'(.)-([^0-9%s%s])' % (self.alpha, letters),
             r'\1 - \2',
             text)
         text = re.sub(
-            r'([^0-9a-zA-Z%s])-(.)' % letters,
+            r'([^0-9%s%s])-(.)' % (self.alpha, letters),
             r'\1 - \2',
             text)
         return text
@@ -216,15 +216,15 @@ class IndicTokenizer(BaseTokenizer):
                 lambda m: r'%s' % (m.group().replace('-', ' - ')),
                 text)
             text = re.sub(
-                '(.)-([^0-9٠-٩۰-۹a-zA-Z'
+                '(.)-([^0-9٠-٩۰-۹%s'
                 '\u0617-\u061a\u0620-\u065f\u066e-\u06d3'
-                '\u06d5\u06fa-\u06ff\ufe70-\ufeff\ufb50-\ufdff])',
+                '\u06d5\u06fa-\u06ff\ufe70-\ufeff\ufb50-\ufdff])' %self.alpha,
                 r'\1 - \2',
                 text)
             text = re.sub(
-                '([^0-9٠-٩۰-۹a-zA-Z'
+                '([^0-9٠-٩۰-۹%s'
                 '\u0617-\u061a\u0620-\u065f\u066e-\u06d3\u06d5'
-                '\u06fa-\u06ff\ufe70-\ufeff\ufb50-\ufdff])-(.)',
+                '\u06fa-\u06ff\ufe70-\ufeff\ufb50-\ufdff])-(.)' %self.alpha,
                 r'\1 - \2',
                 text)
         text = text.split()

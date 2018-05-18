@@ -4,6 +4,7 @@ from .indic_tokenizer import IndicTokenizer
 from .roman_tokenizer import RomanTokenizer
 from .cyrillic_tokenizer import CyrillicTokenizer
 from .armenian_tokenizer import ArmenianTokenizer
+from .georgian_tokenizer import GeorgianTokenizer
 
 
 class Tokenizer():
@@ -14,11 +15,14 @@ class Tokenizer():
         if lang in 'hi ur bn as gu ml pa te ta kn or mr ne bo kok ks'.split():
             self.tok = IndicTokenizer(lang=lang, split_sen=split_sen,
                                       smt=smt)
-        elif lang in 'be '.split():
+        elif lang in 'be bg cu kk ky ru uk myv'.split():
             self.tok = CyrillicTokenizer(lang=lang, split_sen=split_sen,
                                       smt=smt)
-        elif lang in 'hy  '.split():
+        elif lang == 'hy':
             self.tok = ArmenianTokenizer(lang=lang, split_sen=split_sen,
+                                      smt=smt)
+        elif lang == 'ka':
+            self.tok = GeorgianTokenizer(lang=lang, split_sen=split_sen,
                                       smt=smt)
         else:
             self.tok = RomanTokenizer(lang=lang, split_sen=split_sen,
