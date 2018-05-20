@@ -23,8 +23,8 @@ class GeorgianTokenizer(RomanTokenizer):
         # recompile regexes
         self.specascii = re.compile(r'([\\!@#$%^&*()_+={\[}\]|";:<>?`~/\u10fb\u2056])')
         if self.split_sen:
-            self.splitsenr1 = re.compile(' ([\u0589:.?]) ([%s])' % self.alpha_upper)
-            self.splitsenr2 = re.compile(' ([\u0589:.?]) ([\'"\(\{\[< ]+) '
+            self.splitsenr1 = re.compile(' ([.?]) ([%s])' % self.alpha_upper)
+            self.splitsenr2 = re.compile(' ([.?]) ([\'"\(\{\[< ]+) '
                                          '([%s])' % self.alpha_upper)
             self.splitsenr3 = re.compile(
-                ' ([\u0589:.?]) ([\'"\)\}\]> ]+) ([%s])' % self.alpha_upper)
+                ' ([.?]) ([\'"\)\}\]> ]+) ([%s])' % self.alpha_upper)
