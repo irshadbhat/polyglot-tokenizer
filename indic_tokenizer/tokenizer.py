@@ -2,8 +2,9 @@
 
 from .indic_tokenizer import IndicTokenizer
 from .roman_tokenizer import RomanTokenizer
-from .cyrillic_tokenizer import CyrillicTokenizer
+from .greek_tokenizer import GreekTokenizer
 from .armenian_tokenizer import ArmenianTokenizer
+from .cyrillic_tokenizer import CyrillicTokenizer
 from .georgian_tokenizer import GeorgianTokenizer
 
 
@@ -33,6 +34,9 @@ class Tokenizer():
                                       smt=smt)
         elif lang == 'ka':
             self.tok = GeorgianTokenizer(lang=lang, split_sen=split_sen,
+                                      smt=smt)
+        elif lang == 'el':
+            self.tok = GreekTokenizer(lang=lang, split_sen=split_sen,
                                       smt=smt)
         else:
             self.tok = RomanTokenizer(lang=lang, split_sen=split_sen,
