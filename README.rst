@@ -11,8 +11,8 @@ Install
 
 ::
 
-    - git clone https://github.com/irshadbhat/indic-tokenizer.git
-    - cd indic-tokenizer
+    - git clone https://github.com/irshadbhat/polyglot-tokenizer.git
+    - cd polyglot-tokenizer
     - sudo python setup.py install
 
 Tokenizer
@@ -21,7 +21,7 @@ Tokenizer
 .. code:: python
 
     >>> from __future__ import unicode_literals
-    >>> from indic_tokenizer import Tokenizer
+    >>> from polyglot_tokenizer import Tokenizer
     >>> tk = Tokenizer(lang='eng', smt=True) #smt is a flag for social-media-text
     >>> text = "RT @BJP_RSS Crack down on Black money.India slides to 75th slot on Swiss bank money list #ModiForeignAchievements @RituRathaur https://t.c…"
     >>> tk.tokenize(text)
@@ -44,8 +44,8 @@ Tokenizer can also be called from Command Line Interface.
 
 .. parsed-literal::
 
-    irshad@indicnlp$ indic-tokenizer --h
-    usage: indic-tokenizer [-h] [-v] [-i] [-s] [-t] [-o] [-l]
+    irshad@polyglotnlp$ polyglot-tokenizer --h
+    usage: polyglot-tokenizer [-h] [-v] [-i] [-s] [-t] [-o] [-l]
     
     Tokenizer for world's most spoken languages
 
