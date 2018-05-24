@@ -11,7 +11,7 @@ import string
 
 class BaseTokenizer(object):
 
-    def __init__(self, split_sen=False):
+    def __init__(self, split_sen=False, fit=True):
         self.split_sen = split_sen
         file_path = os.path.dirname(os.path.abspath(__file__))
         # Internet Domains (most frequent ones)
@@ -33,11 +33,12 @@ class BaseTokenizer(object):
         self.contractions = self.contractions.split() +\
             self.contractions.upper().split()
         self.alpha = ''.join([unichr(x) for x in range(0x0000, 0x02b0) if unichr(x).isalpha()])
-        self.alpha += ''.join([unichr(x) for x in range(0x1e00, 0x1eff) if unichr(x).isalpha()])
+        self.alpha += ''.join([unichr(x) for x in range(0x1e00, 0x1f00) if unichr(x).isalpha()])
         self.alpha_lower = ''.join([x for x in self.alpha if x.islower()])
         self.alpha_upper = ''.join([x for x in self.alpha if x.isupper()])
-        # precompile regexes
-        self.base_fit()
+        if fit:
+            # precompile regexes
+            self.base_fit()
 
     def base_fit(self):
         # ASCII junk characters

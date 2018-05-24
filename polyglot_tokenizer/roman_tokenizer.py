@@ -12,17 +12,19 @@ from .base import BaseTokenizer
 
 class RomanTokenizer(BaseTokenizer):
     def __init__(self, lang='en', split_sen=False, smt=False, fit=True):
-        super(RomanTokenizer, self).__init__(split_sen)
+        super(RomanTokenizer, self).__init__(split_sen=split_sen, fit=False)
         self.tw = smt
         self.lang = lang
+        ext = 'en' if lang == 'he' else lang
         file_path = os.path.dirname(os.path.abspath(__file__))
-        with io.open('%s/data/nonbreaking_prefixes.%s' % (file_path, lang), encoding='utf-8') as fp:
+        with io.open('%s/data/nonbreaking_prefixes.%s' % (file_path, ext), encoding='utf-8') as fp:
             self.NBP = self.NBP | set(fp.read().split())
         # precompile regexes
         if fit:
             self.fit()
 
     def fit(self):
+        self.base_fit()
         # seperate "," outside
         self.notanumc = re.compile('([^0-9]),')
         self.cnotanum = re.compile(',([^0-9])')
@@ -76,6 +78,11 @@ class RomanTokenizer(BaseTokenizer):
         text = self.acna.sub(r"\1 ' \2", text)
         if self.lang in 'fr ga it ca pt ro sk sl'.split():
             text = self.aca.sub(r"\1' \2", text)
+        elif self.lang == 'he':
+            text = re.sub(r'([%s])"([^%s])' %((self.hebrew_alpha,)*2), r'\1 " \2', text)
+            text = re.sub(r'([^%s])"([%s])' %((self.hebrew_alpha,)*2), r'\1 " \2', text)
+            text = re.sub(r'([^%s])"([^%s])' %((self.hebrew_alpha,)*2), r'\1 " \2', text)
+            text = re.sub(r"([a-zA-Z\u00c0-\u02b0])'([a-zA-Z\u00c0-\u02b0])", r"\1 '\2", text)
         else:
             text = self.aca.sub(r"\1 '\2", text)
         text = self.numcs.sub(r"\1 's", text)
