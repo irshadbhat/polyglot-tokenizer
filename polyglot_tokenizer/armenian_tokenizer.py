@@ -13,7 +13,7 @@ from .roman_tokenizer import RomanTokenizer
 class ArmenianTokenizer(RomanTokenizer):
     def __init__(self, lang='hy', split_sen=False, smt=False):
         super(ArmenianTokenizer, self).__init__(lang='en', split_sen=split_sen, smt=smt, fit=False)
-        self.armenian_alpha = ''.join([unichr(x) for x in range(0x0530, 0x058f) if unichr(x).isalpha()])
+        self.armenian_alpha = ''.join([unichr(x) for x in range(0x0530, 0x0590) if unichr(x).isalpha()])
         self.alpha += self.armenian_alpha
         self.alpha_lower += ''.join([x for x in self.armenian_alpha if x.islower()])
         self.alpha_upper += ''.join([x for x in self.armenian_alpha if x.isupper()])
