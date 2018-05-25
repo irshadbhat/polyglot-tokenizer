@@ -61,10 +61,12 @@ Tokenizer can also be called from Command Line Interface.
                             text like twitter, facebook and whatsapp
       -o , --output         <output-file>
       -l , --language       select language (2 letter ISO-639 code) {hi, ur, bn,
-                            as, gu, ml, pa, te, ta, kn, or, mr, cu, myv, ne, bo,
-                            br, ks, en, es, ca, cs, de, el, en, fi, da, eu, kok,
-                            fr, ga, hu, is, it, lt, lv, nl, pl, pt, ro, ru, sk,
-                            bm, yue, sl, sv, zh, et, fo, gl, hsb, af, ar, be, hy,
-                            bg, ckb, ka, kk, ky, la, no, fa, uk, tl, tr, vi, yo,
-                            ko}
+                            as, gu, ml, pa, te, ta, kn, or, mr, cu, myv, nn, yi,
+                            ne, bo, br, ks, en, es, ca, cs, de, el, en, fi, da,
+                            eu, kok, nb, uz, fr, ga, hu, is, it, lt, lv, nl, pl,
+                            pt, ro, ru, sk, bm, yue, mk, ku, sl, sv, zh, et, fo,
+                            gl, hsb, af, ar, be, hy, bg, ka, ug, hr, mn, tk, kk,
+                            ky, la, no, fa, uk, tl, tr, vi, yo, ko, got, ckb, he,
+                            id, sr}
+
 

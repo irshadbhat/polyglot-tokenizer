@@ -3,10 +3,10 @@
 from .indic_tokenizer import IndicTokenizer
 from .roman_tokenizer import RomanTokenizer
 from .greek_tokenizer import GreekTokenizer
+from .hebrew_tokenizer import HebrewTokenizer
 from .armenian_tokenizer import ArmenianTokenizer
 from .cyrillic_tokenizer import CyrillicTokenizer
 from .georgian_tokenizer import GeorgianTokenizer
-from .hebrew_tokenizer import HebrewTokenizer
 
 
 class Tokenizer():
@@ -14,7 +14,7 @@ class Tokenizer():
                  smt=False, from_file=False):
         self.from_file = from_file
         self.split_sen = split_sen
-        if lang in 'hsb da fo no'.split():
+        if lang in 'hsb da fo no nn'.split():
             lang = 'de'
         elif lang in ['et']:
             lang = 'fi'
@@ -22,12 +22,12 @@ class Tokenizer():
             lang = 'it'
         elif lang in 'af bm eu br tl tr vi yo ko hr id got'.split():
             lang = 'en'
-        elif lang in 'ar ckb fa ug':
+        elif lang in 'ar ckb fa ug uz ku tk'.split():
             lang = 'ur'
         if lang in 'hi ur bn as gu ml pa te ta kn or mr ne bo kok ks'.split():
             self.tok = IndicTokenizer(lang=lang, split_sen=split_sen,
                                       smt=smt)
-        elif lang in 'be bg cu kk ky ru uk sr myv'.split():
+        elif lang in 'be bg cu kk ky ru uk sr mk mn myv'.split():
             self.tok = CyrillicTokenizer(lang=lang, split_sen=split_sen,
                                       smt=smt)
         elif lang == 'hy':
@@ -39,7 +39,7 @@ class Tokenizer():
         elif lang == 'el':
             self.tok = GreekTokenizer(lang=lang, split_sen=split_sen,
                                       smt=smt)
-        elif lang == 'he':
+        elif lang in 'he yi'.split():
             self.tok = HebrewTokenizer(lang=lang, split_sen=split_sen,
                                       smt=smt)
         else:
