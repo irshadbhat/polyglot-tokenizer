@@ -10,5 +10,5 @@ os.environ['SKIP_GENERATE_AUTHORS'] = '1'
 setup(
     setup_requires=['pbr>=2.0', 'setuptools>=17.1'],
     pbr=True,
+    include_package_data=True
 )
-
