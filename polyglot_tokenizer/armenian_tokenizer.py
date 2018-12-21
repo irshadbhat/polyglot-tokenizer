@@ -7,6 +7,8 @@ import io
 import os
 import re
 
+from six import unichr
+
 from .roman_tokenizer import RomanTokenizer
 
 

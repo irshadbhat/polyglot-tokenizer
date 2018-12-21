@@ -8,6 +8,8 @@ import re
 import os
 import string
 
+from six import unichr
+
 
 class BaseTokenizer(object):
 
