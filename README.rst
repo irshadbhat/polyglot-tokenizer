@@ -11,9 +11,7 @@ Install
 
 ::
 
-    - git clone https://github.com/irshadbhat/polyglot-tokenizer.git
-    - cd polyglot-tokenizer
-    - sudo python setup.py install
+    pip install polyglot-tokenizer
 
 Tokenizer
 ^^^^^^^^^
