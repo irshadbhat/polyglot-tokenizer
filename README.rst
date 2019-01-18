@@ -1,20 +1,23 @@
-Tokenizer
-=========
+Polyglot Tokenizer
+==================
 
-----
 
 Tokenizer for world's most spoken languages and social media texts like Facebook, Twitter etc.
 
 
-Install
-^^^^^^^
+Installation
+------------
 
 ::
 
     pip install polyglot-tokenizer
 
-Tokenizer
-^^^^^^^^^
+Examples
+--------
+
+Within Python
+^^^^^^^^^^^^^
+
 
 .. code:: python
 
@@ -38,11 +41,14 @@ Tokenizer
     ...             " की गई चीटियां...")
     [['22', 'साल', 'के', 'लंबे', 'इंतजार', 'के', 'बाद', 'आखिरकार', 'हॉलीवुड', 'स्टार', 'लियोनार्डो', 'डिकैप्रियो', 'को', 'अपनी', 'पहली', 'ऑस्कर', 'ट्रॉफी', 'मिल', 'चुकी', 'है', '।'], ['उन्हें', 'ये', 'अवॉर्ड', 'अपनी', 'फिल्म', "'", 'द', 'रेवेनेंट', "'", 'में', 'ह्यूज', 'ग्लास', 'के', 'किरदार', 'के', 'लिए', 'मिला', ',', 'लेकिन', 'उनके', 'के', 'लिए', 'रोल', 'निभाना', 'आसान', 'नहीं', 'था', '।'], ['फिल्म', 'एक', 'सीन', 'के', 'लिए', 'लियोनार्डो', 'को', 'भैंस', 'का', 'कच्चा', 'लीवर', 'खाना', 'पड़ा', 'था', '।'], ['जबकि', 'असल', 'जिंदगी', 'में', 'वो', 'पूरी', 'तरह', 'शाकाहारी', 'हैं', '।'], ['हालांकि', 'इस', 'सीन', 'के', 'लिए', 'पहले', 'लियोनार्डो', 'को', 'मांस', 'जैसे', 'दिखने', 'वाली', 'चीज', 'दी', 'गई', 'थी', ',', 'लेकिन', 'उन्हें', 'लगा', 'कि', 'ऐसा', 'करना', 'गलत', 'होगा', '।'], ['फिल्म', 'के', 'लिए', 'इम्पोर्ट', 'की', 'गई', 'चीटियां', '...']]
 
-Tokenizer can also be called from Command Line Interface.
+
+From Console
+^^^^^^^^^^^^
 
 .. parsed-literal::
 
-    irshad@polyglotnlp$ polyglot-tokenizer --h
+    polyglot-tokenizer --h
+
     usage: polyglot-tokenizer [-h] [-v] [-i] [-s] [-t] [-o] [-l]
     
     Tokenizer for world's most spoken languages
@@ -66,5 +72,11 @@ Tokenizer can also be called from Command Line Interface.
                             gl, hsb, af, ar, be, hy, bg, ka, ug, hr, mn, tk, kk,
                             ky, la, no, fa, uk, tl, tr, vi, yo, ko, got, ckb, he,
                             id, sr}
+
+    Example ::
+
+    polyglot-tokenizer < raw_file.txt -l en -s > tokenized.txt
+
+
 
 
