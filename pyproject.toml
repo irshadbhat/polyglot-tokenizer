@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "polyglot-tokenizer"
+version = "2.0.1.3"
+description = "Tokenizer for world's most spoken languages and social media texts like Facebook, Twitter etc."
+authors = ["irshadbhat <bhatirshad127@gmail.com>"]
+license = "MIT"
+
+readme = "README.rst"
+
+repository = "https://github.com/irshadbhat/polyglot-tokenizer"
+keywords = ["nlp", "polyglot", "tokenizer"]
+
+classifier = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved",
+    "License :: OSI Approved :: MIT",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5"
+]
+
+
+[tool.poetry.dependencies]
+python = "*"
+six = "^1.12"
+pbr = "^2.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry.scripts]
+polyglot-tokenizer = "polyglot_tokenizer:main"
