@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
 
 """Tokenizer for world's most spoken languages.
 
@@ -11,6 +10,8 @@ media texts like facebook, twitter etc.
 Copyright (c) 2015-2018 Irshad Ahmad
 <irshad.bhat@research.iiit.ac.in>
 """
+
+from __future__ import unicode_literals
 
 import io
 import sys
