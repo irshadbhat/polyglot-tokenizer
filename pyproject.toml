@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "polyglot-tokenizer"
-version = "2.0.1.4"
+version = "2.0.1.5"
 description = "Tokenizer for world's most spoken languages and social media texts like Facebook, Twitter etc."
 authors = ["irshadbhat <bhatirshad127@gmail.com>"]
 license = "MIT"

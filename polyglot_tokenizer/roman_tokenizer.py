@@ -33,9 +33,9 @@ class RomanTokenizer(BaseTokenizer):
         self.naca = re.compile(
             "([^%s0-9])'([%s])" %((self.alpha,)*2))
         # split hyphens
-        self.hypheninnun = re.compile('(-?[0-9]-+[0-9]-?){,}')
-        self.ch_hyp_noalnum = re.compile('(.)-([^%s0-9])' %self.alpha)
-        self.noalnum_hyp_ch = re.compile('([^%s0-9])-(.)' %self.alpha)
+        #self.hypheninnun = re.compile('(-?[0-9]-+[0-9]-?){,}')
+        #self.ch_hyp_noalnum = re.compile('(.)-([^%s0-9])' %self.alpha)
+        #self.noalnum_hyp_ch = re.compile('([^%s0-9])-(.)' %self.alpha)
         # split sentences
         if self.split_sen:
             self.splitsenr1 = re.compile(' ([.?]) ([%s])' % self.alpha_upper)
@@ -90,14 +90,14 @@ class RomanTokenizer(BaseTokenizer):
         # split dots at word beginings
         text = re.sub(r' (\.+)([^0-9])', r' \1 \2', text)
         # seperate out hyphens
-        text = self.multihyphen.sub(
-            lambda m: r'%s' % (' '.join(m.group(1))),
-            text)
-        text = self.hypheninnun.sub(
-            lambda m: r'%s' % (m.group().replace('-', ' - ')),
-            text)
-        text = self.ch_hyp_noalnum.sub(r'\1 - \2', text)
-        text = self.noalnum_hyp_ch.sub(r'\1 - \2', text)
+        #text = self.multihyphen.sub(
+        #    lambda m: r'%s' % (' '.join(m.group(1))),
+        #    text)
+        #text = self.hypheninnun.sub(
+        #    lambda m: r'%s' % (m.group().replace('-', ' - ')),
+        #    text)
+        #text = self.ch_hyp_noalnum.sub(r'\1 - \2', text)
+        #text = self.noalnum_hyp_ch.sub(r'\1 - \2', text)
         # handle non-breaking prefixes
         text = self.tokenize_prefixes(text)
         # restore multi-dots

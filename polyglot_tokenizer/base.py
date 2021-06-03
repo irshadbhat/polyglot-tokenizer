@@ -60,7 +60,8 @@ class BaseTokenizer(object):
         # unicode currency symbols
         self.ucurrency = re.compile('([\u20a0-\u20cf])')
         # all "other" ASCII special characters
-        self.specascii = re.compile(r'([\\!@#$%^&*()_+={\[}\]|";:<>?`~/])')
+        #self.specascii = re.compile(r'([\\!@#$%^&*()_+={\[}\]|";:<>?`~/])')
+        self.specascii = re.compile(r'([\\!$%^&*()_+={\[}\]|";:<>?`~])')
         # keep multiple dots together
         self.multidot = re.compile(r'(\.\.+)([^\.])')
         # seperate "," outside
@@ -77,7 +78,7 @@ class BaseTokenizer(object):
         self.nacna = re.compile(
             "([^%s])'([^%s])" % ((self.alpha,)*2))
         # split hyphens
-        self.multihyphen = re.compile('(-+)')
+        #self.multihyphen = re.compile('(-+)')
         # restore multi-dots
         self.restoredots = re.compile(r'(DOT)(\1*)MULTI')
         # split supplementary unicode

@@ -94,6 +94,7 @@ class IndicTokenizer(BaseTokenizer):
         if special_ch:
             text = re.sub('([%s])' % special_ch, r' \1 ', text)
         # separate out hyphens
+        '''
         text = re.sub(
             '(-?[0-9%s]-+[0-9%s]-?){,}' % (digits, digits),
             lambda m: r'%s' % (m.group().replace('-', ' - ')),
@@ -107,6 +108,7 @@ class IndicTokenizer(BaseTokenizer):
             r'([^0-9%s%s])-(.)' % (self.alpha, letters),
             r'\1 - \2',
             text)
+        '''
         return text
 
     def tokenize(self, text):
@@ -143,8 +145,8 @@ class IndicTokenizer(BaseTokenizer):
         text = self.numcs.sub(r"\1 's", text)
         text = text.replace("''", " ' ' ")
         # seperate out hyphens
-        text = self.multihyphen.sub(lambda m: r'%s' % ' '.join(m.group(1)),
-                                    text)
+        #text = self.multihyphen.sub(lambda m: r'%s' % ' '.join(m.group(1)),
+        #                            text)
         # handle non-breaking prefixes
         text = self.tokenize_prefixes(text)
         # tokenize by language script
@@ -210,6 +212,7 @@ class IndicTokenizer(BaseTokenizer):
                 r' \1 ',
                 text)
             # separate out hyphens
+            '''
             text = re.sub(
                 '(-?[0-9٠-٩۰-۹]-+'
                 '[0-9٠-٩۰-۹]-?){,}',
@@ -227,6 +230,7 @@ class IndicTokenizer(BaseTokenizer):
                 '\u06fa-\u06ff\ufe70-\ufeff\ufb50-\ufdff])-(.)' %self.alpha,
                 r'\1 - \2',
                 text)
+            '''
         text = text.split()
         text = ' '.join(text)
         # restore multiple dots, purna virams and deergh virams
