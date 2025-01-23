@@ -283,7 +283,7 @@ class BaseTokenizer(object):
         # remove ascii junk
         text = self.ascii_junk.sub('', text)
         # seperate out all "other" ASCII special characters
-        text = self.specascii.sub(r' \1 ', text)
+        #text = self.specascii.sub(r' \1 ', text)
         # keep multiple dots together
         text = self.multidot.sub(lambda m: r' %sMULTI %s' % (
             'DOT' * len(m.group(1)), m.group(2)), text)
