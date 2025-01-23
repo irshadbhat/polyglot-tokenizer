@@ -49,6 +49,8 @@ class RomanTokenizer(BaseTokenizer):
         if self.lang in ['fi', 'sv']:
             self.specascii = re.compile(r'([\\!@#$%^&*()_+={\[}\]|";<>?`~/])')
             self.split_colon = re.compile(r':([^%s])' %self.alpha_lower)
+        self.lspecascii = re.compile(r' ([\\!$%^&*()_+={\[}\]|";:<>?`~]+)([a-zA-Z0-9,\.+-]+) ')
+        self.rspecascii = re.compile(r' ([a-zA-Z0-9,\.+-]+)([\\!$%^&*()_+={\[}\]|";:<>?`~]+) ')
 
     def tokenize(self, text):
         # normalize unicode punctituation
@@ -119,6 +121,8 @@ class RomanTokenizer(BaseTokenizer):
             text = self.splitsenr1.sub(r' \1\n\2', text)
             text = self.splitsenr2.sub(r' \1\n\2 \3', text)
             text = self.splitsenr3.sub(r' \1 \2\n\3', text)
+        text = self.lspecascii.sub(r' \1 \2 ', text)
+        text = self.rspecascii.sub(r' \1 \2 ', text)
         if self.split_sen:
             return [sen.split() for sen in text.split('\n')]
         else:
